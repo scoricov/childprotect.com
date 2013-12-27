@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title><%= title %></title>
+
+    <link rel="stylesheet" href="<%=$static_url%><%=$stma%>/style.css" type="text/css" media="screen">
+    <script type="text/javascript" src="<%=$static_url%><%=$stma%>/js/app.min.js" charset="utf-8"></script>
+
+    <link rel="shortcut icon" href="<%=$static_url%><%=$stma%>/favicon.ico" type="'image/x-icon"/>
+
+</head>
+  <body>
+    <div id="wrapper">
+        <header>
+            <a class="logo" href="/"></a>
+            <span class="logo-slogan">Let's build the web without child abuse and neglect</span>
+            <ul>
+            </ul>
+        </header>
+
+        <%= content %>
+
+        <div id="bottomfooter">
+            <div class="centered">
+                <p class="footer-links">
+                    <a href="mailto:info@childprotect.com">Contact Us</a>
+                </p>
+            </div><!--end centered-->
+        </div><!--end bottomfooter-->
+    </div><!--end wrapper-->
+  </body>
+</html>

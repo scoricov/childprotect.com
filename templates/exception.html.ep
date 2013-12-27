@@ -1,0 +1,25 @@
+% layout 'default';
+% title 'ChildProtect';
+<div>
+    <div class="borders"></div>
+    <div id="topfooter">
+        <div class="top-shadow"></div>
+        <div class="centered">
+
+            <div class="tabs-wrapper block-confirm">
+                <div class="tab-content">
+                    <article>
+                        <h1>Internal Server Error</h1>
+                        <p>The server encountered an internal error or misconfiguration and was unable to complete your request.</p>
+                    </article>
+
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+        </div><!--end centered-->
+        <div class="bottom-shadow"></div>
+    </div><!--end topfooter-->
+    <div class="borders bottom"></div>
+</div>

@@ -1,0 +1,38 @@
+% layout 'default';
+% title 'ChildProtect - Signup';
+<section>
+    <div class="centered">
+        <h1><span>You are almost done.</span></h1>
+        <div class="clear"></div>
+    </div><!--end centered-->
+</section>
+
+<div>
+    <div class="borders"></div>
+    <div id="topfooter">
+        <div class="top-shadow"></div>
+        <div class="centered">
+
+            <div class="tabs-wrapper block-confirm">
+                <div class="tab-content">
+                    <article>
+<% if (!$error) { %>
+                        <h1>Check email</h1>
+                        <p>We need you to confirm your email address <b><%= $user->email %></b> so that you can use it with the ChildProtect website.</p>
+                        <p>In order to do that, just click on the link in recieved email.</p>
+<% } else { %>
+                        <h1>Error</h1>
+                        <p><%= $error %></p>
+<% } %>
+                    </article>
+
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+        </div><!--end centered-->
+        <div class="bottom-shadow"></div>
+    </div><!--end topfooter-->
+    <div class="borders bottom"></div>
+</div>

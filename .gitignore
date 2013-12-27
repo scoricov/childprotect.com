@@ -1,0 +1,11 @@
+*~
+.DS_Store
+.idea/
+*.komodoproject
+.komodotools/
+Build
+MANIFEST.bak
+MYMETA.*
+_build/
+blib/
+Makefile.old

@@ -1,0 +1,84 @@
+#!/usr/bin/env perl
+
+use v5.12;
+use strict;
+use warnings;
+
+use File::Basename 'dirname';
+use File::Spec;
+use Getopt::Long;
+use Data::Dumper;
+
+use lib join '/', File::Spec->splitdir(dirname(__FILE__)), 'lib';
+use lib join '/', File::Spec->splitdir(dirname(__FILE__)), '..', 'lib';
+
+require ChildProtect::Client;
+require WZ::Sanitize;
+
+
+my $api_url_prefix = 'https://api.childprotect.com/';
+my $http_method    = 'GET';
+my ($api_key_id, $api_key, $command);
+my $stdin_list  = 0,
+my ($date1, $date2, $md5, $fsize);
+my (@tokens, $line);
+
+GetOptions(
+    'url=s'        => \$api_url_prefix,
+    'key-id=i'     => \$api_key_id,
+    'key=s'        => \$api_key,
+    'cmd=s'        => \$command,
+    'date1=s'      => \$date1,
+    'date2=s'      => \$date2,
+    'md5=s'        => \$md5,
+    'fsize=s'      => \$fsize,
+    'list'         => \$stdin_list,
+);
+
+my $client = ChildProtect::Client->new(
+    api_url     => $api_url_prefix,
+    api_key_id  => $api_key_id,
+    api_key     => $api_key,
+);
+
+my $client_method = lc($command);
+$client_method =  WZ::Sanitize::trim($client_method);
+$client_method =~ s/\s+/\_/g;
+$client_method = "$client_method";
+
+unless (
+    ($client_method =~ /^(get|delete|put|post)/) &&
+    $client->can($client_method)
+)
+{
+    say "Unrecognised command '$command'";
+    exit;
+}
+
+if ($stdin_list)
+{
+    while ($line = <STDIN>)
+    {
+        chomp($line);
+        push @tokens, [ split(/\s+/, $line) ];
+    }
+}
+
+my $result = $client->$client_method( {
+    tokens => \@tokens,
+    date1  => $date1,
+    date2  => $date2,
+    md5    => $md5,
+    fsize  => $fsize,
+} );
+
+if (my $error = $client->last_error)
+{
+    say "API error: $error";
+    exit;
+}
+
+if ($result)
+{
+    say Dumper($result);
+}

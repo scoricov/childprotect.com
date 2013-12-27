@@ -1,0 +1,23 @@
+#!/usr/bin/env perl
+
+use v5.12;
+use Mojo::Base -strict;
+
+use File::Basename 'dirname';
+use File::Spec;
+
+use lib join '/', File::Spec->splitdir(dirname(__FILE__)), 'lib';
+use lib join '/', File::Spec->splitdir(dirname(__FILE__)), '..', 'lib';
+
+# Check if Mojolicious is installed;
+die <<EOF unless eval 'use Mojolicious::Commands; 1';
+It looks like you don't have the Mojolicious framework installed.
+EOF
+
+# Application
+$ENV{MOJO_APP}      ||= 'ChildProtect';
+$ENV{MOJO_MODE}     ||= 'production';
+$ENV{MOJO_RELOAD}     = 0;
+
+# Start commands
+Mojolicious::Commands->start;

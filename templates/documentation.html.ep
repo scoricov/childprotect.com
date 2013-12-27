@@ -1,0 +1,319 @@
+<h1 class="firstrow">Synopsis</h1>
+<p>ChildProtect API is designed to be used by developers of web services dealing with mass file storage, file sharing and cloud hosting. The idea of ChildProtect service is to consolidate and quickly synchronize among it's members the information about abuse content uploaded on the web so that to be deleted instantly. The API provides methods for fetching lists of abuse tokens submitted within different periods, reporting deletion of particular content and publishing tokens of newly discovered abuse content to be checked upon by all ChildProtect members.</p>
+<p>
+Within various mass file storages a file may be referred to by it's unique <a href="http://www.ietf.org/rfc/rfc1321.txt">MD5</a> hash and it's size in bytes. This compound footprint is also used to identify an abuse token within the ChildProtect database.</p>
+
+<h1>Workflow</h1>
+
+<p>Following the best practices, an anti-abuse revision cycle performed by a file storage may look like this:</p>
+<ol>
+<li>Aggregate the local list of abuse contents from abuse cases reported directly to the storage holder by third party organizations.</li>
+<li>Decide on the list of files to be actually deleted in respect of local reports and commit the deletion.</li>
+<li>Submit the resulting list of new abuse tokens to ChildProtect.</li>
+<li>Request from ChildProtect an updated list of abuse tokens starting from the last revision period.</li>
+<li>Decide on the list of files to be actually deleted in respect of updates received from ChildProtect and commit the deletion.</li>
+<li>Report to ChildProtect the list of tokens deleted on step 5.</li>
+</ol>
+
+<p>A passive revision cycle may look like this:</p>
+<ol>
+<li>Request from ChildProtect an updated list of abuse tokens starting from the last revision period.</li>
+<li>Decide on the list of files to be actually deleted in respect of updates received from ChildProtect and commit the deletion.</li>
+<li>Report to ChildProtect the list of tokens deleted on step 2.</li>
+</ol>
+
+<h1>Making requests to the API</h1>
+
+<p>The ChildProtect API is based on <a href="http://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>.</p>
+<p>The base URL prefix for the current REST API is</p>
+
+<pre>
+https://api.childprotect.com/REST/2/
+</pre>
+
+<p>Your user agent should use <a href="http://tools.ietf.org/html/rfc6101">SSL 3.0</a> encryption. Should an API request (PUT, POST) or response contain a body, it has to be encoded or parsed as '<b>application/json</b>'.</p>
+
+<h1>Methods of the REST API</h1>
+
+<p>ChildProtect REST API implements the following methods.</p>
+
+<h2>Submitting a single token</h2>
+
+<p>The footprint should be placed to the request URI in the form of MD5 and size parameters delimited by a colon.</p>
+<pre>
+PUT /REST/2/tokens/$md5:$fsize
+
+Body: empty
+</pre>
+
+<p>Example: submit a single token for the file <i>2048</i> bytes long and the MD5 hash equal to '<i>ad0234829205b9033196ba818f7a872c</i>'.</p>
+<pre>
+PUT /REST/2/tokens/ad0234829205b9033196ba818f7a872c:2048 HTTP/1.1
+...
+</pre>
+
+<p>Return value is the same as for the corresponding bulk operation.</p>
+<p>Resulting JSON example:</p>
+<pre>
+{
+    "accepted": "1"
+}
+</pre>
+
+
+<h2>Submitting a list of new tokens</h2>
+
+<pre>
+PUT /REST/2/tokens
+
+Body: JSON structure
+</pre>
+
+<p>Example: submit 3 new tokens.</p>
+<pre>
+PUT /REST/2/tokens HTTP/1.1
+...
+
+{
+    "tokens": [
+        [ "5A105E8B9D40E1329780D62EA2265D8A", 3428632 ],
+        [ "AD0234829205B9033196BA818F7A872B", 1024 ],
+        [ "5A105E8B9D40E1329780D62EA2265D8B", 192262740 ]
+    ]
+}
+</pre>
+
+<p>Return value represents number of new and unique tokens accepted by ChildProtect.</p>
+<p>Resulting JSON example:</p>
+<pre>
+{
+    "accepted": "3"
+}
+</pre>
+<p>The number of tokens accepted not always equal to the number of tokens submitted by client. For example, one or more of the tokens could not be accepted. The reason can be that the client have already reporded some of the tokens previously.</p>
+
+
+<h2>Reporting deletion of a specific token from the member's storage</h2>
+
+<p>The footprint should be placed to the request URI in the form of MD5 and size parameters delimited by a colon.</p>
+<pre>
+DELETE /REST/2/tokens/$md5:$fsize
+</pre>
+
+Example: delete 1 token
+<pre>
+DELETE /REST/2/tokens/ad0234829205b9033196ba818f7a872c:2048 HTTP/1.1
+...
+</pre>
+
+<p>Return value represents number of tokens accepted for deletion.</p>
+<p>Resulting JSON example:</p>
+<pre>
+{
+    "accepted": "1"
+}
+</pre>
+
+
+<h2>Reporting deletion of multiple tokens from the member's storages</h2>
+
+<pre>
+PUT /REST/2/tokens-deleted
+
+Body: JSON structure
+</pre>
+
+<p>Example: report deletion of 5 tokens</p>
+<pre>
+PUT /REST/2/tokens-deleted HTTP/1.1
+...
+
+{
+    "tokens": [
+        [ "cd5386d30531904ae07eb7b006020630", 8719377433 ],
+        [ "5A105E8B9D40E1329780D62EA2265D8A", 3428632 ],
+        [ "AD0234829205B9033196BA818F7A872B", 1024 ],
+        [ "5A105E8B9D40E1329780D62EA2265D8B", 192262740 ],
+        [ "897d09da20bcc530dc91e1f1d460cdd2", 55602 ]
+    ]
+}
+</pre>
+
+<p>Return value represents number of tokens accepted for deletion.</p>
+<p>Resulting JSON example:</p>
+<pre>
+{
+    "accepted": "4"
+}
+</pre>
+
+<p>In the example above one of the tokens was not accepted for deletion. The reason can be that the client have already reporded this token previously. So, the number of tokens accepted not always equal to the number of tokens submitted by client.</p>
+
+
+<h2>Getting foreign tokens submitted by other members and yet not being deleted by you</h2>
+<pre>
+GET /REST/2/tokens?date1=YYYY-MM-DD&date2=YYYY-MM-DD
+</pre>
+
+<p>By default the list compiled will represent current tokens submitted during the current date. To specify other date periods, use respective query parameters - date1 and date2. One or both of the date ranges may be ommited. The date format is strict and should consist of 4 digits representing a year, 2-digit month and day of month, delimited by dashes ('YYYY-MM-DD').</p>
+
+<p>Example: list foreign tokens for the period of 27-31 of May 2012</p>
+<pre>
+GET /REST/2/tokens?date1=2012-05-27&date2=2012-05-31 HTTP/1.1
+...
+</pre>
+
+<p>Returned body contains list of tokens. Each token record contains an MD5 hash of submitted file, it's size and the date when it was submitted to ChildProtect.</p>
+<p>Resulting JSON example:</p>
+<pre>
+{
+    "tokens": [
+        [
+            "5A105E8B9D40E1329780D62EA2265D8A",
+            "3428632",
+            "2012-06-03"
+        ],
+        [
+            "AD0234829205B9033196BA818F7A872B",
+            "1024",
+            "2012-06-03"
+        ]
+    ]
+}
+</pre>
+
+
+<h2>Getting tokens submitted by you</h2>
+
+<p>The input formats and the return body structure are the same as in the previous method.</p>
+<pre>
+GET /REST/2/tokens-submitted?date1=YYYY-MM-DD&date2=YYYY-MM-DD
+</pre>
+
+
+<h2>Getting tokens deleted by you</h2>
+
+<p>The input formats are the same as in the previous method.</p>
+<pre>
+GET /REST/2/tokens-deleted?date1=YYYY-MM-DD&date2=YYYY-MM-DD
+</pre>
+
+<p>Return body structure is the same as in the previous method except that the dates returned represent dates of deletion.</p>
+
+
+<h2>Getting counters</h2>
+
+<p>The counters represent your statistics on submitted and deleted tokens.</p>
+<pre>
+GET /REST/2/counters
+</pre>
+
+<p>Resulting JSON example:</p>
+<pre>
+{
+    "submitted": "1828",
+    "deleted": "7232"
+}
+</pre>
+
+
+<h1>Authenticating Requests Using the REST API</h1>
+
+<p>When accessing ChildProtect API using REST, you must provide the following items in your request so the request can be authenticated:</p>
+
+<h2>Request Elements</h2>
+
+<ul>
+<li><b>Access Key ID</b> — It is the access key id of the identity you are using to send your request.</li>
+<li><b>Signature</b> — Each request must contain a valid request signature, or the request is rejected. A request signature is calculated using your Secret Access Key, which is a shared secret known only to you and ChildProtect.</li>
+<li><b>Date</b> — Each request must contain the date and time the request was created, represented as a string in UTC.</li>
+</ul>
+
+<p>Following are the general steps for authenticating requests to ChildProtect REST API. It is assumed you have the necessary security credentials, Access Key ID and Secret Access Key.<p>
+
+<ol>
+<li>Construct a request to ChildProtect.</li>
+<li>Calculate signature using your Secret Access Key.</li>
+<li>Send the request to ChildProtect. Include your Access Key ID and the signature in your request. ChildProtect performs the next three steps.</li>
+<li>ChildProtect uses the Access Key ID to look up your Secret Access Key.</li>
+<li>ChildProtect calculates a signature from the request data and the Secret Access Key using the same algorithm you used to calculate the signature you sent in the request.</li>
+<li>If the signature generated by ChildProtect matches the one you sent in the request, the request is considered authentic. If the comparison fails, the request is discarded, and ChildProtect returns an error response.</li>
+</ol>
+
+<h1>Signing and Authenticating REST Requests</h1>
+
+<p>Authentication is the process of proving your identity to the system. Identity is an important factor in ChildProtect access control decisions. Requests are allowed or denied in part based on the identity of the requester. For example, the right to submit new abuse tokens and report of deletion of abuse files from your storages. As a developer, you'll be making requests that invoke these privileges so you'll need to prove your identity to the system by authenticating your requests. This section shows you how.</p>
+<p>The ChildProtect REST API uses a custom HTTP scheme based on a <a href="http://www.networksorcery.com/enp/data/hmac.htm">keyed-HMAC</a> (Hash Message Authentication Code) for authentication. To authenticate a request, you first concatenate selected elements of the request to form a string. You then use your Secret Access Key to calculate the HMAC of that string. Informally, we call this process "signing the request," and we call the output of the HMAC algorithm the "signature" because it simulates the security properties of a real signature. Finally, you add this signature as a parameter of the request, using the syntax described in this section.</p>
+<p>When the system receives an authenticated request, it fetches the Secret Access Key that you claim to have, and uses it in the same way to compute a "signature" for the message it received. It then compares the signature it calculated against the signature presented by the requester. If the two signatures match, then the system concludes that the requester must have access to the Secret Access Key, and therefore acts with the authority of the principal to whom the key was issued. If the two signatures do not match, the request is dropped and the system responds with an error message.</p>
+
+<h2>Example Authenticated ChildProtect REST Request</h2>
+
+<pre>
+GET /REST/2/tokens HTTP/1.1
+Host: api.childprotect.com
+Date: Wed, 30 May 2012 21:05:32 GMT
+Authorization: ChildProtect 5061:NyopBoQfJgHLHwncssBjvAlga36Y75/Upr2Qjsvjkno=
+</pre>
+
+<h2>The Authentication Header</h2>
+
+<p>The ChildProtect REST API uses the standard HTTP Authorization header to pass authentication information. (The name of the standard header is unfortunate because it carries authentication information, not authorization). Under the ChildProtect authentication scheme, the Authorization header has the following form.</p>
+
+<pre>
+Authorization: ChildProtect AccessKeyId:Signature
+</pre>
+
+<p>Developers are issued an Access Key ID and a Secret Access Key when they register. For request authentication, the AccessKeyId element identifies the secret key that was used to compute the signature, and (indirectly) the developer making the request.</p>
+<p>The Signature element is the <a href="http://tools.ietf.org/html/rfc4634">RFC 4634 HMAC-SHA-256</a> of selected elements from the request, and so the Signature part of the Authorization header will vary from request to request. If the request signature calculated by the system matches the Signature included with the request, then the requester will have demonstrated possession to the Secret Access Key. The request will then be processed under the identity, and with the authority, of the developer to whom the key was issued.</p>
+<p>Following is pseudo-grammar that illustrates the construction of the Authorization request header (\n means the Unicode code point U+000A commonly called newline).</p>
+
+<pre>
+Authorization = "ChildProtect" + " " + AccessKeyId + ":" + Signature;
+
+Signature = Base64( HMAC-SHA-256( YourSecretAccessKeyID, UTF-8-Encoding-Of( StringToSign ) ) );
+
+StringToSign = HTTP-Request-Method + "\n" +
+	HTTP-Request-URI-Path + "\n" +
+	HTTP-Request-Date;
+</pre>
+
+<h2>Time Stamp Requirement</h2>
+
+<p>A valid time stamp using the HTTP/1.1 <b>Date</b> header (<a href="http://www.ietf.org/rfc/rfc822.txt">RFC 822</a>, updated by <a href="http://www.ietf.org/rfc/rfc1123.txt">RFC 1123</a>) is mandatory for authenticated requests. Furthermore, the client time-stamp included with an authenticated request must be within 15 minutes of the ChildProtect system time when the request is received. If not, the request will fail with the 403 error status code. The intention of these restrictions is to limit the possibility that intercepted requests could be replayed by an adversary.</p>
+
+<p>Examples of the <b>Date</b> header:</p>
+<pre>
+Sun, 06 Nov 1994 08:49:37 GMT  ; RFC 822, updated by RFC 1123
+Sunday, 06-Nov-94 08:49:37 GMT ; RFC 850, obsoleted by RFC 1036
+Sun Nov  6 08:49:37 1994       ; ANSI C's asctime() format
+</pre>
+
+<h2>Authentication Examples</h2>
+
+<p>The examples in this section use the (non-working) credentials in the following table.</p>
+
+<p><b>AccessKeyId:</b>&nbsp;&nbsp;<i>9806</i></p>
+<p><b>SecretAccessKey:</b>&nbsp;&nbsp;<i>By7FzJaMxdHe7pKP</i></p>
+
+<p>In the example StringToSigns, formatting is not significant and \n means the Unicode code point U+000A commonly called newline.</p>
+
+<h2>Example: signing a GET request</h2>
+
+<p>This example gets a list of submitted tokens.<p>
+
+<p>Request:<p>
+<pre>
+GET /REST/2/tokens-submitted HTTP/1.1
+Host: api.childprotect.com
+Date: Tue, 29 May 2012 17:28:25 GMT
+Authorization: ChildProtect 9806:nXc5v4dtLKGCNb2VIEB+r024VyZhl+/oDUlXo5tpmqk=
+</pre>
+
+<p>StringToSign:<p>
+<pre>
+GET\n
+/REST/2/tokens-submitted\n
+Tue, 29 May 2012 17:28:25 GMT
+</pre>
+
+<p>Note that the elements in StringToSign that were derived from the are taken literally, including URL-Encoding and capitalization.<p>

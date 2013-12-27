@@ -1,0 +1,44 @@
+% layout 'default';
+% title 'ChildProtect - Account Confirmation';
+<section>
+    <div class="centered">
+        <h1><span>Thank you for collaboration on making the web a better place.</span></h1>
+        <form method="post" action="/login" name="loginform" id="loginform">
+            <input class="validate[required,custom[email]]" type="text" name="email" placeholder="Email" id="sublogin" />
+            <input class="validate[required]" type="password" name="password" placeholder="Password" id="subpassword" />
+            <input type="submit" name="send" value="Login" id="subloginbt" />
+            <div class="clear"></div>
+        </form>
+
+        <div class="clear"></div>
+    </div><!--end centered-->
+</section>
+
+<div>
+    <div class="borders"></div>
+    <div id="topfooter">
+        <div class="top-shadow"></div>
+        <div class="centered">
+
+            <div class="tabs-wrapper block-confirm">
+                <div class="tab-content">
+                    <article>
+<% if (!$error) { %>
+                        <h1>Confirmed</h1>
+                        <p>Congratulations! Your email has been confirmed. Thank you for signing up. We have just sent to you ChildProtect login credentials.</p>
+<% } else { %>
+                        <h1>Error</h1>
+                        <p><%= $error %></p>
+<% } %>
+                    </article>
+
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+        </div><!--end centered-->
+        <div class="bottom-shadow"></div>
+    </div><!--end topfooter-->
+    <div class="borders bottom"></div>
+</div>

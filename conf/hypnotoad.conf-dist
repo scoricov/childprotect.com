@@ -1,0 +1,17 @@
+{
+    listen => [ 'http://127.0.0.1:8080' ],
+    workers => 32,
+    accepts => 1000,
+    backlog => 512,
+    clients => 100,
+    graceful_timeout => 15,
+    user  => 'nobody',
+    group => 'nobody',
+    heartbeat_interval  =>  3,
+    heartbeat_timeout   =>  6,
+    keep_alive_requests => 24,
+    keep_alive_timeout  => 25,
+    pid_file => '/var/run/childprotect-hypnotoad.pid',
+    proxy => 1,
+    upgrade_timeout => 30,
+}

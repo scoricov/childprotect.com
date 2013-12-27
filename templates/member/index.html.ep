@@ -1,0 +1,57 @@
+% layout 'member';
+<div>
+    <div class="borders"></div>
+    <div id="topfooter" class="topfooter-wide">
+        <div class="top-shadow"></div>
+        <div class="centered centered-wide">
+
+            <div class="tabs-wrapper block-api">
+                <div class="tab-content">
+                    <table cellspacing="0" cellpadding="0"><tr>
+                    <td><div class="api-info">
+                        <p>You are logged in as <b><%= $user->name %></b> &lt;<a href="mailto:<%= $user->email %>"><%= $user->email %></a>&gt;.</p>
+                        <p>Please study the API documentation below to implement and set up your own agent. Should you have questions or experience any difficulties concerning it`s usage, please contact <a href="mailto:info@childprotect.com">info@childprotect.com</a>.</p>
+                    </div></td>
+                    <td class="api">
+                        <p>Access Key ID</p>
+                        <pre><%= $user->id %></pre>
+                        <p style="margin-top:30px;">Secret Access Key</p>
+                        <pre><%= $user->api_key %></pre>
+                    </td></tr></table>
+                </div>
+            </div>
+
+            <% if ($message) { %>
+                <div style="padding:0 0 20px 0;"><p class="msg-notice"><%= $message %></p></div>
+            <% } %>
+
+            <div class="tabs-wrapper">
+                <ul class="tabs">
+                    <li><a href="#tab1">API Documentation</a></li>
+                    <li><a href="#tab2">About Us</a></li>
+                    <li class="last-tab"><a href="#tab3">Legal Notice</a></li>
+                </ul>
+                <div class="tabs-container">
+                    <div id="tab1" class="tab-content">
+
+                    <article>
+                    <%= include 'documentation' %>
+                    </article>
+
+                    </div>
+                    <div id="tab2" class="tab-content">
+                    <%= include 'about' %>
+                    </div>
+
+                    <div id="tab3" class="tab-content">
+                    <%= include 'legal' %>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+
+        </div><!--end centered-->
+        <div class="bottom-shadow"></div>
+    </div><!--end topfooter-->
+    <div class="borders bottom"></div>
+</div>

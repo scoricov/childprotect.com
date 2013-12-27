@@ -1,0 +1,13 @@
+<% my $v = $_[0]; my $user = $v->{user}; my $url = $v->{url}; %>Dear <%= $user->name %>,
+
+Thank you for signing up for ChildProtect collaboration project.
+
+To activate your account, simply click on the link below or paste into the url field on your favorite browser:
+
+<%= $url %>
+
+The activation link will only be good for 2 weeks, after that you will have to try again from the beginning. You will obtain access to the ChildProtect API right after confirming your email and logining in.
+
+
+Best regards,
+ChildProtect Support Team

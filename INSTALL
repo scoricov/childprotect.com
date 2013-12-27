@@ -1,0 +1,128 @@
+Dependencies:
+
+DBI 1.616
+DBD::mysql 4.019
+Try::Tiny 0.09
+Email::Valid 0.184
+JSON::XS 2.31
+MIME::Lite 3.027
+Mojolicious 2.38
+Mojolicious::Plugin::Authentication 1.21
+Regexp::Common 2011121001
+Date::Calc
+Cache::Memcached::Fast 0.19
+HTML::Scrubber
+String::Random
+
+
+Starman:
+
+plackup --server Starman --host 194.187.99.151 --port 80 --pid /usr/local/childprotect.com/pid --error-log=/usr/local/childprotect.com/log/error_log --access-log /usr/local/childprotect.com/log/access_log --daemonize --keepalive-timeout 1 --workers 32 --max-requests 1000 --preload-app 1 /usr/local/childprotect.com/script/childprotect-app
+plackup --server Starman --listen /usr/local/childprotect.com/starman.sock --user nobody --pid /usr/local/childprotect.com/pid --error-log=/usr/local/childprotect.com/log/error_log --access-log /usr/local/childprotect.com/log/access_log --daemonize --keepalive-timeout 1 --workers 32 --max-requests 1000 --preload-app 1 /usr/local/childprotect.com/script/childprotect-app
+
+
+Hypnotoad:
+
+/usr/local/bin/hypnotoad --config /usr/local/childprotect.com/conf/hypnotoad.conf /usr/local/childprotect.com/script/childprotect-app
+
+
+Nginx + Hypnotoad:
+
+upstream childprotect_hypnotoad {
+    server 127.0.0.1:8080 fail_timeout=0;
+}
+
+server {
+    listen 88.85.68.129:443 ssl;
+    server_name childprotect.com www.childprotect.com;
+
+    client_max_body_size 4m;
+    client_body_buffer_size 8k;
+    keepalive_timeout 25;
+
+    charset                  utf-8;
+    ignore_invalid_headers   on;
+
+    # Hashbang
+    rewrite ^/#!.* / redirect;
+    break;
+
+    ##
+    # SSL
+    ##
+    ssl on;
+    ssl_certificate     /usr/local/etc/nginx/ssl/childprotect.com-wildcard.pem;
+    ssl_certificate_key /usr/local/etc/nginx/ssl/childprotect.com-wildcard.key;
+    ssl_session_timeout 9m;
+    ssl_protocols SSLv3;
+    ssl_ciphers HIGH:!ADH:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    ##
+    # logging
+    ##
+    access_log /var/log/nginx/childprotect.access combined;
+    error_log  /var/log/nginx/childprotect.error;
+
+    ##
+    # proxy
+    ##
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-HTTPS 0;
+    proxy_set_header Host $http_host;
+    proxy_redirect     off;
+    proxy_buffering    off;
+    # proxy_buffer_size 4k;
+    # proxy_buffers 4  16k;
+    proxy_connect_timeout   3s;
+    proxy_send_timeout     20s;
+    proxy_read_timeout     60s;
+    send_timeout 60s;
+
+    ##
+    # GZIP
+    ##
+    gzip  on;
+    gzip_http_version 1.1;
+    gzip_vary on;
+    gzip_comp_level 6;
+    gzip_proxied any;
+    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript image/png image/gif image/jpeg image/pjpeg;
+    gzip_buffers 16 8k;
+    gzip_min_length 512;
+    gzip_disable "MSIE [1-6].(?!.*SV1)"
+    gzip_disable "^Mozilla/4\.0[678]"
+
+    ##
+    # limits
+    ##
+    limit_conn slimits 50;
+
+    location ~ ^(/$|/login|/logout|/signup|/member|/REST) {
+        proxy_pass http://childprotect_hypnotoad;
+    }
+
+    location /s {
+        rewrite   "^(.*)\/\d{10}\/(.*)$" $1/$2 ;
+        alias     /usr/local/childprotect.com/public;
+        expires   30d;
+        autoindex off;
+
+        valid_referers none blocked server_names;
+        if ($invalid_referer) {
+            return   403;
+        }
+    }
+}
+
+
+FreeBSD Deployment:
+
+portinstall p5-DBI p5-DBD-mysql p5-Try-Tiny p5-Email-Valid p5-JSON-XS p5-MIME-Lite p5-Mojolicious p5-Regexp-Common p5-Date-Calc p5-HTML-Scrubber p5-String-Random
+portinstall p5-EV p5-IO-Socket-IP p5-IO-KQueue
+portinstall databases/memcached
+portinstall databases/p5-Cache-Memcached-Fast
+
+portinstall nginx-1.0.11,1 mysql-server-5.1.60 mysql-client-5.1.60 mysql-scripts-5.1.6
+cpan Mojolicious::Plugin::Authentication

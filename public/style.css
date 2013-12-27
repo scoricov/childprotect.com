@@ -1,0 +1,971 @@
+/*-----------------------------------------------------------------------------------*/
+/*	1.	CSS Reset & Clearfix - http://meyerweb.com/eric/tools/css/reset/
+/*-----------------------------------------------------------------------------------*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+label{
+	position:absolute;
+	left:-9999px;
+}
+
+input,textarea {
+	font: 12px/20px Helvetica, Arial, sans-serif;
+	font:inherit;
+	resize:none;
+}
+
+[placeholder]:active,
+[placeholder]:focus{
+	cursor:text;
+	color:#767676;
+}
+
+.clear {
+	clear:both;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*	2.	Document Setup (body, common classes, structure etc)
+/*-----------------------------------------------------------------------------------*/
+
+@font-face {
+    font-family: 'Lobster';
+    src: url('fonts/lobster/Lobster_1.3-webfont.eot');
+    src: url('fonts/lobster/Lobster_1.3-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lobster/Lobster_1.3-webfont.woff') format('woff'),
+         url('fonts/lobster/Lobster_1.3-webfont.ttf') format('truetype'),
+         url('fonts/lobster/Lobster_1.3-webfont.svg#Lobster13Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+	font: 14px/20px Helvetica, Arial, sans-serif;
+	background:url(images/bg.png) repeat scroll 0 0;
+	margin:0;
+	padding:0;
+	color:#E5E5E5;
+}
+
+.centered {
+	width:580px;
+	margin:0 auto;
+	padding:0;
+}
+
+.centered-wide {
+	width: 900px;
+}
+
+a {
+	text-decoration:none;
+	color:#81aac2;
+}
+
+a:focus , a:link, a:active {
+	outline:none;
+}
+
+a:hover {
+	text-decoration:underline;
+}
+
+p {
+	margin-bottom:15px;
+}
+
+p.center {
+	text-align:center;
+}
+
+header {
+	height: 100px;
+}
+
+header ul {
+	display: block;
+	width: 900px;
+	margin: 10px auto;
+	text-align: center;
+}
+
+header ul li {
+	display: block;
+	float: right;
+	padding: 0 18px 0 20px;
+	line-height: 18px;
+}
+
+header ul li a {
+	text-decoration: none;
+	line-height: 18px;
+	font-size: 13px;
+	color: #000;
+	display: block;
+}
+header ul li a:hover {
+	text-decoration: underline;
+}
+
+header ul li.link-logout {
+	padding: 0 10px 0 18px;
+	background: url(images/288.png) no-repeat;
+}
+header ul li.link-password {
+	background: url(images/146.png) no-repeat;
+}
+
+header {
+	width: 900px;
+	margin: 0 auto;
+	text-align: center;
+	position: relative;
+	zoom: 1;
+}
+
+a.logo {
+	position: absolute;
+	top: 0px;
+	left: 50%;
+	margin-left: -129px;
+	width: 258px;
+	height: 53px;
+	display:block;
+	background: url(./images/logo.png) no-repeat;
+}
+span.logo-slogan {
+	position: absolute;
+	top: 60px;
+	left: 0;
+	width: 900px;
+	text-align:center;
+	display:block;
+	color: #5086A0;
+	font-family: 'Lobster', Lobster, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+}
+
+h1{
+	font-size:18px;
+	line-height:26px;
+	text-align:center;
+	font-weight:normal;
+	position:relative;
+	margin-top:5px;
+	color:#fff;
+}
+
+h1 span {
+	background:#89b0c7;
+	padding:3px 10px 5px;
+	display:inline-block;
+}
+
+h2 {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size:24px;
+	line-height:30px;
+	font-weight:normal;
+	position:relative;
+}
+
+h3 {
+	font-size:18px;
+	text-align:center;
+	font-weight:normal;
+	color:#767676;
+	text-shadow:1px 1px 0 #f9f9f9;
+	margin-bottom:10px;
+}
+
+h4 {
+	font-size:16px;
+	font-weight:bold;
+	margin-bottom:20px;
+}
+
+#topfooter {
+	background:#ececec;
+	position:relative;
+	overflow:hidden;
+	padding:70px 0 140px;
+	color:#717171;
+	border-top:1px solid #e0f2fc;
+	border-bottom:1px solid #e0f2fc;
+}
+
+.topfooter-wide {
+	padding:40px 0 !important;
+}
+
+.borders {
+	width:100%;
+	height:2px;
+	background:url(images/border.png) repeat-x scroll;
+	margin-top: 10px;
+}
+.bottom {
+	margin-top:1px;
+}
+
+.bottom-shadow {
+	background:url(images/footer-bottom-shadow.png) repeat-x;
+	position:absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height:6px;
+	text-indent: -9999px;
+}
+
+.top-shadow {
+	background:url(images/footer-top-shadow.png) repeat-x;
+	position:absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height:6px;
+	text-indent: -9999px;
+}
+
+#topfooter p {
+	font-size:13px;
+	margin-bottom:15px;
+}
+
+#topfooter .last {
+	margin-right:0px;
+}
+
+#topfooter h2 {
+	color:#fff;
+	margin-bottom:25px;
+}
+
+#bottomfooter {
+	background:url(images/bg.png) repeat scroll 0 0;
+	padding:10px 0;
+	overflow:hidden;
+}
+
+pre {
+	font-family: "Bitstream Vera Sans Mono","Courier",monoscope;
+	background-color: #F8F8F8;
+	border: 1px solid #CCC;
+	font-size: 13px;
+	line-height: 19px;
+	overflow: auto;
+	padding: 6px 10px;
+	border-radius: 3px;
+	margin: 10px 0;
+}
+
+.block-api {
+	margin-bottom: 20px;
+}
+.block-api .tab-content {
+	padding: 20px 40px 20px !important;
+}
+
+.block-api .tab-content .api p {
+	font-weight: bold;
+}
+.block-api table {
+	width: 100%;
+}
+.block-api td {
+	width: 50%;
+}
+.block-api .api-info {
+	padding: 0 40px 0 0px;
+}
+.block-confirm article {
+	padding-left: 15px;
+}
+
+
+.block-confirm .tab-content {
+	padding: 20px 40px 20px !important;
+}
+.block-confirm h1 {
+	margin: 10px 0 !important;
+}
+
+
+/*-----------------------------------------------------------------------------------*/
+/* Article Content Styles
+/*-----------------------------------------------------------------------------------*/
+
+article,
+article p,
+article li {
+	font-size: 13px;
+}
+
+article a {
+	text-decoration: underline;
+}
+
+article b {
+	font-weight: bold;
+}
+
+article h1,
+article h2 {
+	position: static;
+	text-align: left;
+	color: #81AAC2 !important;
+	font-weight: bold;
+}
+article h1 {
+	margin: 20px 0 10px 0 !important;
+	font-size: 24px !important;
+}
+article h2 {
+	margin: 14px 0 7px 0 !important;
+	font-size: 18px !important;
+}
+article h1 span,
+article h2 span {
+	display: inline;
+	padding: 0;
+
+}
+
+article ul,
+article ol {
+	list-style-type: disc;
+	margin: 10px 0;
+	padding: 0 16px;
+}
+
+article ol {
+	list-style-type: decimal;
+}
+
+article i {
+	font-style: italic;
+}
+
+article ul li,
+article ol li {
+	margin: 0;
+	padding: 0;
+}
+
+article p {
+	margin: 10px 0 !important;
+}
+
+article .firstrow {
+	margin-top: 0 !important;
+}
+
+/*-----------------------------------------------------------------------------------*/
+/*	3.	Main Content Styles
+/*-----------------------------------------------------------------------------------*/
+
+	/*----- 3.1. Countdown -----*/
+
+#countdown {
+	padding:0;
+	position:relative;
+	width:700px;
+	margin-left: 100px;
+}
+
+.hasCountdown {
+	height:155px;
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+.item {
+	float:left;
+	text-align:center;
+	margin:0;
+	width:350px;
+	position:relative;
+}
+
+.item .lines {
+	position:absolute;
+	background:url(images/lines.png) no-repeat scroll 0 0;
+	display:block;
+	width:12px;
+	height:1px;
+	right:0px;
+	bottom:75px;
+}
+
+.item span {
+	font-size:14px;
+	clear:both;
+	color:#fff;
+	width:85px;
+	display:inline-block;
+	text-transform:lowercase;
+	padding: 0px 0 1px;
+}
+
+.item span.deleted {
+	background:#deb5bb;
+}
+
+.item span.submitted {
+	background:#a4c5a0;
+}
+/*
+.item span.days {
+	background:#96abb7;
+}
+
+.item span.hours {
+	background:#a4c5a0;
+}
+
+.item span.minutes {
+	background:#deb5bb;
+}
+
+.item span.seconds {
+	background:#e7ba93;
+}*/
+
+.item p {
+	font-family: 'Lobster', Lobster, Helvetica, Arial, sans-serif;
+	text-align:center;
+	margin-bottom:17px;
+	font-size:76px;
+	height:95px;
+	line-height:110px;
+	text-shadow: 2px 2px 1px #c8d7e0;
+	color:#ffffff;
+}
+
+.one-half {
+	width: 48%;
+}
+
+.one-half  {
+	position: relative;
+	margin-right: 4%;
+	float: left;
+}
+
+.last {
+	margin-right: 0!important;
+	clear: right;
+}
+
+
+	/*----- 3.2. Contact Form & Subscribe Form-----*/
+
+.form-row {
+	padding: 3px 0;
+}
+
+#subscribe {
+	width:500px;
+	display:block;
+}
+
+form#cform {
+	position:relative;
+	float:left;
+	margin:0;
+	display:block;
+	background:#f8f8f8;
+	border:1px solid #e2e5e5;
+	padding:10px;
+}
+
+form#loginform,
+form#subscribeform,
+form#passwordform {
+	position:relative;
+	margin:10px 0 20px 15px;
+	display:block;
+	background:#f8f8f8;
+	border:1px solid #e2e5e5;
+	padding:10px;
+}
+
+form#loginform {
+	margin: 30px 0 20px 0;
+}
+
+.subscribetext {
+	margin-top:15px;
+}
+
+input#sublogin,
+input#subpassword,
+input#subnewpassword,
+input#suboldpassword,
+input#subconfirmpassword,
+input#subname,
+input#suburl,
+input#subemail {
+	background:#fff;
+	border:0 none;
+	font-size:12px;
+	width:420px;
+	height:14px;
+	line-height:14px;
+	padding:10px 20px;
+	border:1px solid #e1e1e1;
+}
+
+input#sublogin,
+input#subpassword {
+	float: left;
+	width: 175px;
+}
+input#subpassword {
+	margin-left:10px;
+}
+
+input#subloginbt,
+input#subsignup,
+input#subsignupcancel,
+input#subsubmit {
+	float:left;
+	margin-left:10px;
+	width:100px;
+	height:34px;
+	font-family: Lobster, 'Lobster', Helvetica, Arial;
+	color:#fff;
+	font-size:18px;
+	cursor:pointer;
+	box-shadow:inset 0px 1px 0px #b0cad9;
+	text-shadow: 1px 1px 0px #6e8d9f;
+	background:#89b0c7;
+	border:1px solid #79909e;
+}
+
+input#subsignup,
+input#subsignupcancel {
+	float: none;
+	margin-left:0;
+}
+
+input#subsignupcancel {
+	margin-left: 10px;
+}
+
+input#subsubmit:hover {
+	background:#85a8be;
+}
+
+#message, #mesaj {
+	margin: 0; padding: 0;
+}
+
+input#name, input#email  {
+	margin-bottom:10px;
+	float:left;
+	border:0 none;
+	font-size:12px;
+	width:200px;
+	height:14px;
+	line-height:14px;
+	padding:10px 20px;
+	background:#fff;
+	border:1px solid #e1e1e1;
+}
+
+input#submit {
+	float:right;
+	background:#9fa8ae;
+	border:0 none;
+	width:80px;
+	height:34px;
+	font-family: Lobster, 'Lobster', Helvetica, Arial;
+	color:#fff;
+	font-size:18px;
+	cursor:pointer;
+	box-shadow:inset 0px 1px 0px #b0cad9;
+	text-shadow: 1px 1px 0px #6e8d9f;
+	background:#89b0c7;
+	border:1px solid #79909e;
+}
+
+input#submit:hover {
+	background:#85a8be;
+}
+
+textarea#comments {
+	width:200px;
+	height:80px;
+	padding:20px 20px;
+	margin-bottom:10px;
+	font-size:12px;
+	float:left;
+	background:#fff;
+	border:1px solid #e1e1e1;
+}
+
+.contact-loader {
+	position:relative;
+	float: right;
+	margin-top: 14px;
+	margin-right:10px;
+}
+
+.subscribe-loader {
+	position: absolute;
+	right: 130px;
+	top: 21px;
+}
+
+.error_message {
+	text-align:center;
+	color:#ce4900;
+	padding:10px 0;
+	font-size:12px;
+}
+
+.separator {
+	width:100%;
+	height:1px;
+	border-top:1px dashed #e5e5e5;
+	clear:both;
+	padding-bottom:15px;
+}
+
+#success_page {
+	text-align:left;
+	padding:10px 0;
+}
+
+	/*----- 3.3. Tabs -----*/
+
+.tabs-wrapper {
+	width: 100%;
+	min-height:240px;
+ }
+
+ .centered-wide .tabs-wrapper {
+ 	min-height: 1px;
+ }
+
+.tab-item {
+	clear:both;
+	overflow:hidden;
+	padding:15px 0;
+	border-bottom:1px solid #dedede;
+}
+
+.tabs-container {
+	float:left;
+	position:relative;
+	display:block;
+	width:100%;
+}
+
+li.last-item {
+	border-bottom:0 none;
+}
+
+
+.tabs-wrapper .tab-content {
+	background:#fff;
+	box-shadow:2px 2px 2px #dedede;
+	padding:40px;
+	/*overflow:hidden;*/
+}
+
+ul.tabs {
+	float: left;
+	margin-left:1px;
+	height: 42px;
+	width: 100%;
+	padding-left: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+ul.tabs li {
+	float: left;
+	padding-left: 0 !important;
+	overflow: hidden;
+	padding-bottom: 0;
+	position: relative;
+	text-align:center;
+	background:url(images/inactive-tab.png) no-repeat scroll right bottom;
+	outline:none;
+}
+
+ul.tabs li a {
+	height: 42px;
+	line-height: 42px;
+	text-decoration:none;
+	font-size:14px;
+	font-weight:bold;
+	color: #8197a4;
+	display: block;
+	padding: 0 25px;
+	outline:none;
+}
+
+ul.tabs li a:hover {
+	color:#697a84;
+}
+
+ul.tabs li.active a:hover {
+	color:#798a94;
+}
+
+ul.tabs li.active, ul.tabs li.active a:hover  {
+	background: #fff !important;
+	box-shadow:1px -1px 2px #dedede;
+
+}
+ul.tabs li.active {
+	margin-left:-1px;
+}
+
+.footer-links {
+	color: #000;
+	font-size: 14px;
+	text-align: center;
+	margin: 0;
+}
+
+.footer-links a {
+	color: #000;
+	text-decoration: underline;
+}
+
+.footer-links a:hover {
+	text-decoration: none;
+}
+
+.msg-error {
+	color: #E61616;
+	padding: 4px 10px;
+	border: 1px solid #E61616;
+	font-size: 12px !important;
+	font-weight: bold;
+	margin-bottom: 15px;
+	background: #FFEAEA;
+}
+
+.msg-notice {
+	color: #000;
+	padding: 4px 10px;
+	border: 1px solid #B5B8C8;
+	font-size: 12px;
+	margin-bottom: 15px;
+	background: #C2E3BE;
+}
+
+
+/* VALIDATION ENGINE */
+
+
+
+
+/* Z-INDEX */
+ .formError { z-index: 990; }
+    .formError .formErrorContent { z-index: 991; }
+    .formError .formErrorArrow { z-index: 996; }
+
+    .formErrorInsideDialog.formError { z-index: 5000; }
+    .formErrorInsideDialog.formError .formErrorContent { z-index: 5001; }
+    .formErrorInsideDialog.formError .formErrorArrow { z-index: 5006; }
+
+
+
+
+.inputContainer {
+	position: relative;
+	float: left;
+}
+
+.formError {
+	position: absolute;
+	top: 300px;
+	left: 300px;
+	display: block;
+	cursor: pointer;
+}
+
+.ajaxSubmit {
+	padding: 20px;
+	background: #55ea55;
+	border: 1px solid #999;
+	display: none
+}
+
+.formError .formErrorContent {
+	width: 100%;
+	background: #ee0101;
+	position:relative;
+	color: #fff;
+	width: 150px;
+	font-size: 11px;
+	border: 2px solid #ddd;
+	box-shadow: 0 0 6px #000;
+	-moz-box-shadow: 0 0 6px #000;
+	-webkit-box-shadow: 0 0 6px #000;
+	padding: 4px 10px 4px 10px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+.greenPopup .formErrorContent {
+	background: #33be40;
+}
+
+.blackPopup .formErrorContent {
+	background: #393939;
+	color: #FFF;
+}
+
+.formError .formErrorArrow {
+	width: 15px;
+	margin: -2px 0 0 13px;
+	position:relative;
+}
+body[dir='rtl'] .formError .formErrorArrow,
+body.rtl .formError .formErrorArrow {
+	margin: -2px 13px 0 0;
+}
+
+.formError .formErrorArrowBottom {
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	margin: 0px 0 0 12px;
+	top:2px;
+}
+
+.formError .formErrorArrow div {
+	border-left: 2px solid #ddd;
+	border-right: 2px solid #ddd;
+	box-shadow: 0 2px 3px #444;
+	-moz-box-shadow: 0 2px 3px #444;
+	-webkit-box-shadow: 0 2px 3px #444;
+	font-size: 0px;
+	height: 1px;
+	background: #ee0101;
+	margin: 0 auto;
+	line-height: 0;
+	font-size: 0;
+	display: block;
+}
+
+.formError .formErrorArrowBottom div {
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+.greenPopup .formErrorArrow div {
+	background: #33be40;
+}
+
+.blackPopup .formErrorArrow div {
+	background: #393939;
+	color: #FFF;
+}
+
+.formError .formErrorArrow .line10 {
+	width: 15px;
+	border: none;
+}
+
+.formError .formErrorArrow .line9 {
+	width: 13px;
+	border: none;
+}
+
+.formError .formErrorArrow .line8 {
+	width: 11px;
+}
+
+.formError .formErrorArrow .line7 {
+	width: 9px;
+}
+
+.formError .formErrorArrow .line6 {
+	width: 7px;
+}
+
+.formError .formErrorArrow .line5 {
+	width: 5px;
+}
+
+.formError .formErrorArrow .line4 {
+	width: 3px;
+}
+
+.formError .formErrorArrow .line3 {
+	width: 1px;
+	border-left: 2px solid #ddd;
+	border-right: 2px solid #ddd;
+	border-bottom: 0 solid #ddd;
+}
+
+.formError .formErrorArrow .line2 {
+	width: 3px;
+	border: none;
+	background: #ddd;
+}
+
+.formError .formErrorArrow .line1 {
+	width: 1px;
+	border: none;
+	background: #ddd;
+}

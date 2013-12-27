@@ -1,0 +1,28 @@
+{
+    db => {
+        main => {
+            1 => [qw/localhost childprotect childprotect ChildProtectPass utf8/],
+        },
+    },
+    cache => {
+        servers => ['/tmp/memcached.sock'],
+    },
+    mail => {
+        default => {
+            from       => '"ChildProtect" <no-reply@childprotect.com>',
+            'reply-to' => '"ChildProtect Help Center" <info@childprotect.com>',
+        },
+        'signup-confirmation' => {
+            subject    => 'Confirm your ChildProtect account',
+        },
+        'signup-welcome' => {
+            subject    => 'Welcome to ChildProtect',
+        },
+    },
+    static => {
+        serve      => 1,
+        magic      => 1,
+        url_prefix => '/',
+    },
+    base_url     => 'https://childprotect.com/',
+}

@@ -1,0 +1,16 @@
+<article>
+<p class="firstrow">ChildProtect helps web services to detect child pornography files that may be stored on their servers.</p>
+
+<p>File exchanging and cloud hosting services are interested in preventing the spread of child abuse files, but</p>
+<ul>
+    <li>they have to deal with terabytes of information</li>
+    <li>they can’t automatically evaluate files for abuse-content</li>
+    <li>their branched architecture complicates the task</li>
+</ul>
+
+<p>ChildProtect has a solution. The project consolidates information about abuse content uploaded on the web. Participants of Childprotect system use API for share and receive information about abuse files. Participants have a list of illegal files and with MD5 identification they could detect abuse content on their servers and delete it instantly.</p>
+
+<p>Thus, ChildProtect gives free, easy and safe tool to identify child abuse content.</p>
+
+<p>Just sing up to API and start to make the web a better place.</p>
+</article>

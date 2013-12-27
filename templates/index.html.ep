@@ -1,0 +1,79 @@
+% layout 'default';
+% title 'ChildProtect - Let`s build the web without child abuse and neglect';
+<section>
+    <div class="centered centered-wide">
+        <h1><span>Connect your cloud hosting to help cleaning the web from child porn.</span></h1>
+        <div class="centered">
+            <form method="post" action="/login" name="loginform" id="loginform">
+                <input class="validate[required,custom[email]]" type="text" name="email" placeholder="Email" id="sublogin" />
+                <input class="validate[required]" type="password" name="password" placeholder="Password" id="subpassword" />
+                <input type="submit" name="send" value="Login" id="subloginbt" />
+                <div class="clear"></div>
+            </form>
+            <div class="clear"></div>
+            <% if ($error) { %>
+                <p class="msg-error"><%= $error %></p>
+            <% } %>
+            <div class="clear"></div>
+        </div>
+
+        <div class="clear"></div>
+    </div><!--end centered-->
+</section>
+
+<div>
+    <div class="borders"></div>
+    <div id="topfooter">
+        <div class="top-shadow"></div>
+        <div class="centered">
+
+            <div class="tabs-wrapper">
+                <ul class="tabs">
+                    <li><a href="#tab1">About Us</a></li>
+                    <li><a href="#tab2">Sign Up</a></li>
+                    <li class="last-tab"><a href="#tab3">Legal Notice</a></li>
+                </ul>
+                <div class="tabs-container">
+                    <div id="tab1" class="tab-content">
+                    <%= include 'about' %>
+                    </div>
+
+                    <div id="tab2" class="tab-content">
+                        <div id="subscribe">
+                            <article>
+                                <p class="firstrow">Please, complete this short form to get free, easy and safe tool for abuse file detection.</p>
+                                <p>Your email will be used to confirm your registration and to authorize you with your control panel. Also we need to know the name of your project and the URL of it`s landing page.</p>
+                            </article>
+                            <form method="post" action="/signup" name="subscribeform" id="subscribeform">
+                                <div class="form-row">
+                                    <input class="validate[required,custom[email]]" type="text" name="email" placeholder="Email" id="subemail" />
+                                </div>
+                                <div class="form-row">
+                                    <input data-prompt-position="centerRight" class="validate[required]" type="text" name="name" placeholder="Project Name" id="subname" />
+                                </div>
+                                <div class="form-row">
+                                    <input data-prompt-position="bottomRight" class="validate[required,custom[url]]" type="text" name="url" placeholder="Project URL" id="suburl" value="" />
+                                </div>
+                                <div class="form-row">
+                                    <input type="submit" name="send" value="Sign Up" id="subsignup" />
+                                </div>
+                            </form>
+                        </div>
+                        <article>
+                            <p>After joining to ChildProtect and connecting the API, you will receive notification about all abuse-files our participants had detected on their servers. With MD5 identification you will be able to detect these files on your servers.</p>
+                        </article>
+                    </div>
+
+                    <div id="tab3" class="tab-content">
+                    <%= include 'legal' %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+        </div><!--end centered-->
+        <div class="bottom-shadow"></div>
+    </div><!--end topfooter-->
+    <div class="borders bottom"></div>
+</div>

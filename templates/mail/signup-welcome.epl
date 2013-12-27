@@ -1,0 +1,18 @@
+<% my $v = $_[0]; my $user = $v->{user}; my $url = $v->{url}; my $password = $v->{password}; %>Dear, <%= $user->name %>
+
+Thank you for registering with ChildProtect. You've joined a collaboration platform of web masters and developers who work towards cleaning the web from child porn.
+
+Your new account gives you access to the ChildProtect API. You can find documentation and API authentication credentials on your accpunt page after logging in.
+
+Your account information:
+Name: <%= $user->name %>
+Email: <%= $user->email %>
+Password: <%= $password %>
+You can log in to your new account and edit your profile options at:
+<%= $url %>
+
+Should you have any questions concerning the service, please feel free to email us on info@childprotect.com.
+
+
+Best regards,
+ChildProtect Support Team
